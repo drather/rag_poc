@@ -274,3 +274,8 @@ pyvenv.cfg
 pip-selfcheck.json
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm+all,python,virtualenv
+/chroma_db/1ff6e848-6d85-491f-a56e-eea3b78998e4/
+/chroma_db/11e167fc-051c-439b-abb6-8a778982f73e/
+/chroma_db/c820c343-8da9-4754-a061-22291930d697/
+/chroma_db/chroma.sqlite3
+/data.pkl
