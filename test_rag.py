@@ -1,11 +1,12 @@
 import torch
 import chromadb
 from sentence_transformers import SentenceTransformer
-from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline, BitsAndBytesConfig
+
 
 from langchain_community.embeddings import HuggingFaceBgeEmbeddings, SentenceTransformerEmbeddings
 from langchain_community.vectorstores import Chroma
-from langchain_community.llms import HuggingFacePipeline
+from langchain_community.llms import Ollama
+
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate # Import PromptTemplate
 
@@ -68,20 +69,12 @@ def main():
     retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
     print(f"DB에서 로드된 문서 개수: {vectorstore._collection.count()}")
 
-    # LLM 로드
-    llm_model_id = "beomi/KoAlpaca-Polyglot-5.8B"
-    llm_tokenizer = AutoTokenizer.from_pretrained(llm_model_id)
-    llm_model = AutoModelForCausalLM.from_pretrained(llm_model_id, quantization_config=BitsAndBytesConfig(load_in_8bit=True))
-
-    llm_pipe = pipeline(
-        "text-generation",
-        model=llm_model,
-        tokenizer=llm_tokenizer,
-        max_new_tokens=64,
+    # Ollama LLM 로드
+    llm = Ollama(
+        model="llama2",
         temperature=0.1,
-        return_full_text=False
+        verbose=True,
     )
-    llm = HuggingFacePipeline(pipeline=llm_pipe)
 
     # 사용자 정의 프롬프트 템플릿
     template = """주어진 참고 문서만을 사용하여 다음 질문에 답변하세요. 참고 문서에 없는 내용은 절대로 지어내지 마세요. 만약 참고 문서에서 답변을 찾을 수 없다면, '참고 문서에서 답변을 찾을 수 없습니다.'라고 답변하세요.\n\n{context}\n\n질문: {question}\n답변:"""
