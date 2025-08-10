@@ -1,0 +1,26 @@
+## 2025년 AA 시스템 구성 현황 보고서
+
+### 1. 시스템 개요
+AA 시스템은 고객 관리 및 서비스 제공을 위한 핵심 플랫폼입니다. MSA(Microservices Architecture) 기반으로 설계되었으며, 각 서비스는 독립적으로 배포 및 운영됩니다.
+
+### 2. 주요 구성 요소
+- **프론트엔드**: React.js 기반의 웹 애플리케이션 (Nginx 웹 서버)
+- **백엔드 서비스**: Spring Boot (Java) 기반의 마이크로서비스 10개 이상
+- **데이터베이스**: PostgreSQL (주 데이터), Redis (캐싱 및 세션 관리)
+- **메시지 큐**: Apache Kafka (비동기 통신 및 이벤트 처리)
+- **API 게이트웨이**: Spring Cloud Gateway
+- **인증/인가**: Keycloak 연동
+
+### 3. 배포 환경
+- **클라우드**: AWS (EC2, RDS, EKS, S3 등)
+- **컨테이너 오케스트레이션**: Kubernetes (EKS)
+- **CI/CD**: Jenkins, ArgoCD
+
+### 4. 네트워크 구성
+- VPC 내 Private Subnet에 서비스 배포
+- Public Subnet에 Bastion Host 및 Load Balancer 위치
+- 보안 그룹 및 NACL을 통한 접근 제어 강화
+
+### 5. 모니터링 및 로깅
+- Prometheus, Grafana를 통한 시스템 메트릭 수집 및 시각화
+- ELK Stack (Elasticsearch, Logstash, Kibana)을 통한 중앙 집중식 로깅
